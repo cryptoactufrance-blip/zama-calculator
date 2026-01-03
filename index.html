@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zama OG NFT $$$ Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .card {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.1) 0%, rgba(255, 152, 0, 0.05) 100%);
+            border: 1px solid rgba(255, 193, 7, 0.2);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFC107 0%, #FF9800 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .slider-group {
+            margin-bottom: 35px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #e0e0e0;
+        }
+
+        .slider-value {
+            background: linear-gradient(135deg, #FFC107 0%, #FF9800 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #FFC107 0%, #FF9800 100%);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(255, 193, 7, 0.5);
+            transition: transform 0.2s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #FFC107 0%, #FF9800 100%);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 10px rgba(255, 193, 7, 0.5);
+            transition: transform 0.2s;
+        }
+
+        input[type="range"]::-moz-range-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.15) 0%, rgba(255, 152, 0, 0.1) 100%);
+            border: 2px solid rgba(255, 193, 7, 0.3);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .formula-info {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(30, 30, 30, 0.9);
+            border: 1px solid rgba(255, 193, 7, 0.15);
+            border-radius: 12px;
+            padding: 12px 16px;
+            max-width: 300px;
+            font-size: 11px;
+            color: #888;
+            line-height: 1.5;
+            backdrop-filter: blur(10px);
+        }
+
+        .formula-info strong {
+            color: #FFC107;
+            font-size: 12px;
+        }
+
+        .creator-popup {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.95) 0%, rgba(123, 31, 162, 0.95) 100%);
+            border: 2px solid rgba(186, 104, 200, 0.5);
+            border-radius: 16px;
+            padding: 16px 20px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(138, 43, 226, 0.4);
+            animation: slideIn 0.4s ease-out;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .creator-popup:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(138, 43, 226, 0.6);
+        }
+
+        .creator-popup.show {
+            display: flex;
+        }
+
+        .creator-popup img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .creator-text {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .close-popup {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-popup:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .result-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #b0b0b0;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .result-value {
+            font-size: 48px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FFC107 0%, #FF9800 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .result-suffix {
+            font-size: 24px;
+        }
+
+        @media (max-width: 600px) {
+            .card {
+                padding: 30px 25px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .result-value {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Zama OG NFT $$$ Calculator</h1>
+        </div>
+
+        <div class="card">
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span>Number of NFTs</span>
+                    <span class="slider-value" id="nftValue">1</span>
+                </div>
+                <input type="range" id="nftSlider" min="0" max="5" value="1" step="1">
+            </div>
+
+            <div class="slider-group">
+                <div class="slider-label">
+                    <span>Zama FDV at TGE</span>
+                    <span class="slider-value" id="fdvValue">$0.5B</span>
+                </div>
+                <input type="range" id="fdvSlider" min="0.1" max="2" value="0.5" step="0.1">
+            </div>
+        </div>
+
+        <div class="result-card">
+            <div class="result-label">Estimated Value</div>
+            <div class="result-value">
+                <span class="result-suffix">$</span><span id="resultValue">3,818</span>
+            </div>
+        </div>
+
+        <div class="formula-info">
+            <strong>Formula:</strong><br>
+            [(NFTs × 200) × (FDV / 0.055) × 1.05] - (200 × NFTs)
+        </div>
+
+        <div class="creator-popup" id="creatorPopup">
+            <button class="close-popup" onclick="closePopup(event)">×</button>
+            <img src="https://pbs.twimg.com/profile_images/1308460197259661312/XnrXa0xo_400x400.jpg" alt="CryptoMage">
+            <span class="creator-text">Created by CryptoMage</span>
+        </div>
+    </div>
+
+    <script>
+        const nftSlider = document.getElementById('nftSlider');
+        const fdvSlider = document.getElementById('fdvSlider');
+        const nftValue = document.getElementById('nftValue');
+        const fdvValue = document.getElementById('fdvValue');
+        const resultValue = document.getElementById('resultValue');
+
+        function formatNumber(num) {
+            return new Intl.NumberFormat('en-US', {
+                maximumFractionDigits: 0
+            }).format(num);
+        }
+
+        function calculate() {
+            const A = parseFloat(nftSlider.value);
+            const B = parseFloat(fdvSlider.value);
+            
+            // Formule: (A × 200) × (B / 0.055) × 1.05 - (200 × A)
+            const result = ((A * 200) * (B / 0.055) * 1.05) - (200 * A);
+            
+            nftValue.textContent = A;
+            fdvValue.textContent = `${B.toFixed(1)}B`;
+            resultValue.textContent = formatNumber(result);
+        }
+
+        nftSlider.addEventListener('input', calculate);
+        fdvSlider.addEventListener('input', calculate);
+
+        // Initial calculation
+        calculate();
+
+        // Show creator popup after 15 seconds
+        setTimeout(() => {
+            document.getElementById('creatorPopup').classList.add('show');
+        }, 15000);
+
+        // Close popup function
+        function closePopup(event) {
+            event.stopPropagation();
+            document.getElementById('creatorPopup').style.display = 'none';
+        }
+
+        // Redirect on click
+        document.getElementById('creatorPopup').addEventListener('click', () => {
+            window.open('https://x.com/CryptoMage_YT', '_blank');
+        });
+    </script>
+</body>
+</html>
